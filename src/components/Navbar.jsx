@@ -1,6 +1,29 @@
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { navLinks } from "../../constants";
 
 const Navbar = () => {
+  useGSAP(() => {
+    const navTween = gsap.timeline({
+      scrollTrigger: {
+        trigger: "nav",
+        start: "bottom top", // when the bottom of navbar reaches a top of the viewport that is when we start to apply this specific class
+      },
+    }); // as we now know when the animation will start
+
+    // lets now say what animation should do
+    navTween.fromTo(
+      "nav",
+      { backgroundColor: "transparent" },
+      {
+        backgroundColor: "#00000050",
+        Filter: "blur(10px)",
+        duration: 1,
+        ease: "power1.inOut",
+      }
+    );
+  });
+
   return (
     <nav>
       <div>
