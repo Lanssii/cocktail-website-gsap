@@ -23,6 +23,20 @@ const Hero = () => {
       stagger: 0.06,
       delay: 1, // this means that this animation will start in 1s after the headline animation finishes, everything happening in the same time is not good for user to see
     });
+
+    // ANIMATION FOR LEAVES
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true, // animation progress will be directly related to the scroll, which will make it fill natural
+        },
+      })
+      .to(".right-leaf", { y: 200 }, 0)
+      .to(".left-leaf", { y: -200 }, 0);
   }, []); // dependency as empty array so it will run only at the start
 
   return (
