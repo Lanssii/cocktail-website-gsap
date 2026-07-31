@@ -2,7 +2,14 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all"; // SplitText gsap plugin will break our text into smaller pieces so we can animate them individually
 
+import { useRef } from "react";
+import { useMediaQuery } from "react-responsive"; // tracks css media queries in JS
+
 const Hero = () => {
+  const videoRef = useRef();
+
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // so if screen is up to 767px it is going to be desktop if is lower it is going to be mobile
+
   useGSAP(() => {
     const heroSplit = new SplitText(".title", { type: "chars,words" });
     const paragraphSplit = new SplitText(".subtitle", { type: "lines" });
@@ -37,6 +44,26 @@ const Hero = () => {
       })
       .to(".right-leaf", { y: 200 }, 0)
       .to(".left-leaf", { y: -200 }, 0);
+
+    const startValue = isMobile ? "top 50%" : "center 60%";
+    const endValue = isMobile ? "120% top" : "bottom top";
+
+    // Video animation timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "video",
+        start: startValue,
+        end: endValue,
+        scrub: true, // links animation progress directly to scroll position, scrolling down moves the animation forward and scrolling up reverses it. true - locks instantly to the scrollbar
+        pin: true, // Freezes an element in place on the screen while the scroll continues
+      },
+    });
+
+    videoRef.current.onloadedmetadata = () => {
+      tl.to(videoRef.current, {
+        currentTime: videoRef.current.duration,
+      });
+    };
   }, []); // dependency as empty array so it will run only at the start
 
   return (
@@ -76,6 +103,16 @@ const Hero = () => {
           </div>
         </div>
       </section>
+
+      <div className="video absolute inset-0">
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          preload="auto"
+          src="/videos/output.mp4"
+        ></video>
+      </div>
     </>
   );
 };
