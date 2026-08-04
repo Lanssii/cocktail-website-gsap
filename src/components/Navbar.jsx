@@ -14,10 +14,10 @@ const Navbar = () => {
     // lets now say what animation should do
     navTween.fromTo(
       "nav",
-      { backgroundColor: "transparent" },
+      { backgroundColor: "transparent", backdropFilter: "blur(0px)" },
       {
         backgroundColor: "#00000050",
-        // Filter: "blur(10px)",
+        backdropFilter: "blur(10px)",
         duration: 1,
         ease: "power1.inOut",
       }
